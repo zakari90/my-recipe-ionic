@@ -1,0 +1,19 @@
+.avatar {
+    margin: 50px auto -20px;
+    width: 150px;
+    height: 150px;
+}
+
+.error {
+    color: red;
+    margin-right: 20px;
+}
+
+.btn {
+    margin-top: 50px;
+}
+
+.router-link {
+    display: block;
+    margin-top: 25px;
+}
