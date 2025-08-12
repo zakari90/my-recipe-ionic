@@ -73,6 +73,8 @@ const CreatePost: React.FC = () => {
   };
 
   const onSubmit = async () => {
+    console.log("Submitting post with data:", { title, content, steps, country, region, photos });
+    
     if (!title || !content || !steps || !country || !region) return; // extra safety
 
     const postData = new FormData();
@@ -119,6 +121,7 @@ const CreatePost: React.FC = () => {
       setShowImageToast(true);
     }
   };
+  
 
   return (
     <IonPage>

@@ -38,11 +38,9 @@ import { Editor, EditorState, convertFromRaw, ContentState } from "draft-js";
 
 moment.locale("ar");
 
-// Define TypeScript interfaces for the post and related data
-
 interface User {
   name: string;
-  img_uri?: string | null;
+  img_url?: string | null;
 }
 
 interface PostImage {
@@ -54,7 +52,7 @@ interface Post {
   id: number | string;
   title: string;
   contents: string;
-  steps: string; // JSON string for DraftJS Raw ContentState
+  steps: string; 
   country: string;
   region: string;
   createdAt: string;
@@ -70,12 +68,14 @@ const GetPost: React.FC = () => {
   const [steps, setSteps] = useState<EditorState>(EditorState.createEmpty());
 
   const postId = window.location.pathname.split("/")[3];
-
-  const { jwt } = useContext(AuthContext) as { jwt: string };
+ const auth = useContext(AuthContext);
+if (!auth) {
+    throw new Error("AuthContext is not provided");   
+} 
+  const { jwt } = auth
 
   useEffect(() => {
     getPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getPost = async () => {
@@ -83,12 +83,11 @@ const GetPost: React.FC = () => {
     try {
       const res = await axios.get<Post>(`${GET_ALL_POSTS}/${postId}`, {
         headers: {
-          Authorization: jwt,
+          Authorization: jwt ?? "",
         },
       });
       setPost(res.data);
 
-      // Parse DraftJS steps from JSON string to EditorState
       if (res.data.steps) {
         try {
           const contentState = convertFromRaw(JSON.parse(res.data.steps));
@@ -117,17 +116,14 @@ const GetPost: React.FC = () => {
     },
   };
 
-  function getContent(): HTMLElement | null {
-    return document.querySelector("#content");
-  }
+    function getContent(): HTMLIonContentElement | null {
+  return document.querySelector('#content') as HTMLIonContentElement;
+}
 
-  function scrollToBottom() {
-    const contentEl = getContent();
-    if (contentEl) {
-      contentEl.scrollTo({ top: contentEl.scrollHeight, behavior: "smooth" });
-    }
-  }
-
+function scrollToBottom() {
+  const content = getContent();
+  content?.scrollToBottom(500);
+}
   return (
     <IonPage>
       {showLoading ? (
@@ -172,8 +168,8 @@ const GetPost: React.FC = () => {
                       <IonGrid>
                         <IonRow className="ion-margin-top" align-items="center">
                           <IonAvatar>
-                            {post.User.img_uri ? (
-                              <IonImg src={API_URL + post.User.img_uri} />
+                            {post.User.img_url ? (
+                              <IonImg src={API_URL + post.User.img_url} />
                             ) : (
                               <IonImg src={avatar} />
                             )}

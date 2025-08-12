@@ -1,21 +1,19 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
+import {
+  convertToRaw,
+  Editor,
+  EditorState,
+  RichUtils
+} from "draft-js";
+import "draft-js/dist/Draft.css";
+import {
   FC,
   MouseEvent,
   RefObject,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
-import {
-  Editor,
-  EditorState,
-  convertToRaw,
-  RichUtils,
-  DraftHandleValue,
-} from "draft-js";
-import "draft-js/dist/Draft.css";
 
-// --------- Types ---------
 interface TextEditorProps {
   editorState: EditorState;
   sendToParent: (data: string) => void;
@@ -31,11 +29,12 @@ interface BlockStyleControlsProps {
   onToggle: (style: string) => void;
 }
 
-// --------- Style Button ---------
 const StyleButton: FC<StyleButtonProps> = ({ label, style, onToggle }) => {
   const onClickButton = (e: MouseEvent<HTMLSpanElement>) => {
     e.preventDefault();
     onToggle(style);
+    console.log(`Style toggled: ${style}`);
+    
   };
 
   return (
@@ -45,7 +44,6 @@ const StyleButton: FC<StyleButtonProps> = ({ label, style, onToggle }) => {
   );
 };
 
-// --------- Block Controls ---------
 const BLOCK_TYPES = [
   { label: "قائمة غير مرتبة", style: "unordered-list-item" },
   { label: "قائمة مرتبة", style: "ordered-list-item" },
@@ -64,18 +62,11 @@ const BlockStyleControls: FC<BlockStyleControlsProps> = ({ onToggle }) => (
   </div>
 );
 
-// --------- Main Component ---------
 const TextEditor: FC<TextEditorProps> = ({ editorState: initialEditorState, sendToParent }) => {
   const [editorState, setEditorState] = useState<EditorState>(initialEditorState);
-  const [editorData, setEditorData] = useState<string>("");
 
   const editor: RefObject<Editor> = useRef(null);
 
-  useEffect(() => {
-    if (editorData) {
-      sendToParent(editorData);
-    }
-  }, [editorData]);
 
   useEffect(() => {
     focusEditor();
@@ -93,7 +84,8 @@ const TextEditor: FC<TextEditorProps> = ({ editorState: initialEditorState, send
   const handleChange = (state: EditorState) => {
     setEditorState(state);
     const content = convertToRaw(state.getCurrentContent());
-    setEditorData(JSON.stringify(content));
+      sendToParent(JSON.stringify(content));
+
   };
 
   return (

@@ -11,7 +11,6 @@ import axios from "../../config/axios";
 import { GET_ALL_POSTS } from "../../config/urls";
 import { AuthContext } from "../../context/AuthContext";
 
-// Define props type
 interface CreateCommentProps {
   sendToParent: (comment: string) => void;
 }
@@ -28,7 +27,6 @@ const CreateComment: React.FC<CreateCommentProps> = ({ sendToParent }) => {
 
   const { jwt } = auth;
 
-  // Get post ID from URL
   const postId = window.location.pathname.split("/")[3];
 
   const onSubmit = async () => {

@@ -75,7 +75,7 @@ if (!auth) {
         } else {
             history.push(ionRouter.routeInfo.lastPathname ?? "/");        }
       });
-    };
+    }; 
 
     document.addEventListener("ionBackButton", handleBack);
     return () => document.removeEventListener("ionBackButton", handleBack);

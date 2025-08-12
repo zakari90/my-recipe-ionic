@@ -24,9 +24,9 @@ interface CommentType {
   };
 }
 
-// Props type
+
 interface GetCommentProps {
-  comment: string; // passed from CreateComment or parent
+  comment: string; 
 }
 
 const GetComment: React.FC<GetCommentProps> = ({ comment }) => {
@@ -45,7 +45,7 @@ const GetComment: React.FC<GetCommentProps> = ({ comment }) => {
   useEffect(() => {
     getComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [comment]); // run when new comment is submitted
+  }, [comment]);
 
   const getComments = async () => {
     try {

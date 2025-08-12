@@ -35,7 +35,7 @@ const Like: React.FC<LikeProps> = ({ sendToParent }) => {
     try {
       const res = await axios.get(`${GET_ALL_POSTS}/${postId}/like-count`, {
         headers: {
-          Authorization: jwt || "",
+          Authorization: jwt ?? "",
         },
       });
 
@@ -48,12 +48,12 @@ const Like: React.FC<LikeProps> = ({ sendToParent }) => {
 
   const like = async () => {
     try {
-      const res = await axios.put(
+     await axios.put(
         `${GET_ALL_POSTS}/${postId}/like`,
         {},
         {
           headers: {
-            Authorization: jwt || "",
+            Authorization: jwt ?? "",
           },
         }
       );
@@ -66,7 +66,7 @@ const Like: React.FC<LikeProps> = ({ sendToParent }) => {
   };
 
   const sendLikeCount = () => {
-    sendToParent(likeCount??0);
+    sendToParent(likeCount ?? 0);
   };
 
   return (
